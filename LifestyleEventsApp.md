@@ -64,7 +64,7 @@ Run the generator to install _RSpec_ to the project
 ```bash
 rails generate rspec:install
 ```
-Generate a stub for the project
+Generate an RSpec stub for the project
 ```bash
 bundle binstubs rspec-core
 ```
@@ -73,10 +73,64 @@ Create a _feature_ folder under the _spec_ folder
 mkdir spec/features
 ```
 
+## Guard
+### Adding Guard to the project
+Add _Guard_ gems to the _Gemfile_
+```ruby
+group :development do
+  gem 'web-console', '>= 3.3.0'
+  gem 'guard', '~> 2.14.0'
+  gem 'guard-rspec', '~> 4.7.2'
+  gem 'guard-cucumber', '~> 2.1.2'
+end
+```
 
-
-
+Run the _Bundler_ to install the new _gems_
 ```bash
+bundle install
+```
+
+Initialize _Guard_ with the command:
+```bash
+guard init
+```
+
+Generate an Guard stub for the project
+```bash
+bundle binstubs guard
+```
+
+Initialize _Cucumber_ with the command:
+```bash
+cucumber --init
+```
+
+
+Update the _Guardfile_ by adding watches under the _Rails files_, _Rails config changes_ and _Capybara features specs_
+```ruby
+# Rails files
+rails = dsl.rails(view_extensions: %w(erb haml slim))
+dsl.watch_spec_files_for(rails.app_files)
+dsl.watch_spec_files_for(rails.views)
+
+watch(%r{^app/controllers/(.+)_(controller)\.rb$})  { "spec/features" }
+watch(%r{^app/models/(.+)\.rb$})  { "spec/features" }
+watch(rails.controllers) do |m|
+  [
+    rspec.spec.call("routing/#{m[1]}_routing"),
+    rspec.spec.call("controllers/#{m[1]}_controller"),
+    rspec.spec.call("acceptance/#{m[1]}")
+  ]
+end
+
+# Rails config changes
+watch(rails.spec_helper)     { rspec.spec_dir }
+watch(rails.routes)          { "spec" } # { "#{rspec.spec_dir}/routing" }
+watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
+
+# Capybara features specs
+watch(rails.view_dirs)     { "spec/features" } # { |m| rspec.spec.call("features/#{m[1]}") }
+watch(rails.layouts)       { |m| rspec.spec.call("features/#{m[1]}") }
 ```
 
 ```bash
