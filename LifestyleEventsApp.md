@@ -15,26 +15,20 @@ Start the server
 cd lifestyle_events_app
 rails server
 ```
+
 View the local application in Firefox
-http://localhost:3000/
+- http://localhost:3000/
 
 
 ##  Git
-###  Initiating the Git Repository
+###  Initializing the Git Repository
 ```bash
 git init
 git status
 git add -A
 git status
-git commit -m "Initiating Lifestyle Events App"
+git commit -m "Initializing Lifestyle Events App"
 ```
-
-###  GitHub
-Get public ssh key and add it to GitHub
-```bash
-cat ~/.ssh/id_rsa.pub 				
-```
-
 
 ### Pushing an existing repository from the command line
 ```bash
@@ -52,12 +46,12 @@ sudo apt install ruby-rspec-core
 Add _RSpec_ and _Capybara_ to the _Gemfile_
 ```ruby
 group :development, :test do
-  gem 'rspec-rails', '3.1.0'
+  gem 'rspec-rails', '~> 3.1.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :test do
-  gem 'capybara', '2.7.1'
+  gem 'capybara', '~> 2.7.1'
 end
 ```
 Run the _Bundler_ to install the new _gems_
@@ -73,6 +67,10 @@ rails generate rspec:install
 Generate a stub for the project
 ```bash
 bundle binstubs rspec-core
+```
+Create a _feature_ folder under the _spec_ folder
+```bash
+mkdir spec/features
 ```
 
 
