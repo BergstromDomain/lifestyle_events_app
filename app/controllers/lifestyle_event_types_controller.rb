@@ -1,5 +1,6 @@
 class LifestyleEventTypesController < ApplicationController
   def index
+    @lifestyle_event_types = LifestyleEventType.all
   end
 
   def new
