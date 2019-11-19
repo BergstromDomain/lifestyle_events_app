@@ -1,0 +1,2 @@
+class LifestyleEventType < ApplicationRecord
+end

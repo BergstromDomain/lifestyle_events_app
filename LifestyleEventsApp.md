@@ -46,12 +46,12 @@ sudo apt install ruby-rspec-core
 Add _RSpec_ and _Capybara_ to the _Gemfile_
 ```ruby
 group :development, :test do
-  gem 'rspec-rails', '~> 3.1.0'
+  gem 'rspec-rails', '~> 3.9'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :test do
-  gem 'capybara', '~> 2.7.1'
+  gem 'capybara', '~> 3.29'
 end
 ```
 Run the _Bundler_ to install the new _gems_
@@ -133,7 +133,64 @@ watch(rails.view_dirs)     { "spec/features" } # { |m| rspec.spec.call("features
 watch(rails.layouts)       { |m| rspec.spec.call("features/#{m[1]}") }
 ```
 
+
+## CRUD Event Types
+### Create Event Types
+Create a topic branch
 ```bash
+git checkout -b article-feature-success
+```
+#### Create feature specification
+Create a new file called _creating_event_types_spec.rb_
+```ruby
+require "rails_helper"
+
+RSpec.feature "Creating Lifestyle Event Types" do
+  scenario "A user creates a new event type" do
+    visit "/"
+
+    click_link "New Event Type"
+
+    fill_in "Name", with: "Birthday"
+    click_button "Create Event Type"
+
+    expect(page).to have_content("Event type has been created")
+    expect(page.current_path).to eq(event_types_path)
+  end
+end
+```
+
+#### Update the route file
+Create a _root path_ by updating the _config/routes.rb_ file
+```ruby
+root to: "lifestyle_event_types#index"
+```
+Create the required resources by updating the _config/routes.rb_ file
+```ruby
+resources :lifestyle_event_types
+```
+
+#### Generate controller
+Use a generator to create a controller
+```bash
+rails g controller lifestyle_event_types index
+```
+
+#### Generate model
+Use a generator to create a model. __Note__ the model is singular and the controller is plural
+```bash
+rails g model lifestyle_event_type title:string
+```
+
+#### Run the migration
+Run the migration to create a database
+```bash
+rails db:migrate
+```
+
+
+
+```ruby
 ```
 
 ```bash

@@ -1,5 +1,6 @@
-Nik's Ruby on Rails Summary
+Ruby on Rails Summary
 ==================================================
+This **Ruby on Rails Summary** is my documentation of getting started with _Ruby on Rails_. It briefly touches which _Gems_ to use, some _IDE_ specific configurations and setting, version control with _Git_ as well as deployment to both _Heruko_ and _AWS_. It's written as a reference guide for myself but hopefully it will be useful for you as well.
 
 ##  References
 - [guides.rubyonrails.org](guides.rubyonrails.org)
@@ -11,8 +12,8 @@ Nik's Ruby on Rails Summary
 
 
 ##  Setting up Rails
+I used the following steps to set up _Rails_
 ```bash
-cd /mnt/w/rails/bergstromdomain/lifestyle_events_app
 sudo apt update
 sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
@@ -24,20 +25,47 @@ sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libread
 ```
 
 
-###  Gemfile
-Update _Gemfile_ before running the _installer_ with
-```bash
-bundle install
-```
-
 ##  Creating new Ruby on Rails project
+The following steps are recommended when you start a new _Rails_ project
+1. **Set up the environment**
+  1. [Start a new _Rails_ project](#start-a-new-rails-project)
+  2. [Install the _RSpec_ gem](/GemSummary.md#rspec)
+  3. [Install the _Capybara_ gem](/GemSummary.md#capybara)
+  4. [Install the _Guard_ gem](/GemSummary.md#guard)
+  5. [Initialize a _Git_ repository](/GitSummary.md)
+2. **CRUD for the first model in your application**
+  1. Create a _Git_ feature branch
+  2. Create a _RSpec_ feature spec
+  3. Update _Routes_
+  4. Create _Controller_
+  5. Create _View_
+  6. Update styling using _Bootstrap_ or other framework
+  7. Create a _Model_
+  8. Add _Data validation_ to your model
+  9. Refactor your code
+  10. Commit your code and merge into the _Master branch_
+3. **User Management**
+  1. Add the _Device_ gem
+  2. Create the _Sign-up_ functionality
+  3. Create the _Log in_ functionality
+  4. Create the _Log out_ functionality
+  5. Install the _Factory Girl_ gem
+4. **Adding additional functionality for your application**
+
+
+
+## Start a new Rails project
 Start a new (_Todo_) project with the _Rails new_ command
 ```bash
 rails new todoapp
 ```
 
+Update _Gemfile_ before running the _installer_ with
+```bash
+bundle install
+```
 
-###  Starting the local Rails server
+Starting the local Rails server
 ```bash
 cd todoapp
 rails s
@@ -47,7 +75,7 @@ View the application local host in Firefox
 http://localhost:3000/
 
 
-###  Adding a root route
+##  Adding a root route
 Edit _/config/routes.rb_ by adding a root route
 ```ruby
     root "pages#home"
@@ -116,8 +144,24 @@ todo3.errors.any?
 todo3.errors.full_message
 ```
 
-# Cloud9
-##  Start server in Cloud9
+## RSpec
+
+### Running RSpec
+Run all specs
+```bash
+rspec
+```
+Run specific specs
+```bash
+rspec spec/features/create_spec.rb
+```
+
+```bash
+```
+
+
+## Cloud9
+###  Start server in Cloud9
 Move into the application folder and run the _start_ command
 - `bash$ cd myRailsApp`
 - `bash$ rails s -b $IP -p $PORT`

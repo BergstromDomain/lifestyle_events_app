@@ -1,0 +1,2 @@
+module LifestyleEventTypesHelper
+end

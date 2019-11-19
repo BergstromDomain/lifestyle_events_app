@@ -36,8 +36,14 @@ git commit -m "Initiating the application"
 - `bash$ git remote add origin git@github.com:BergstromDomain/lifestyle_events_app.git
 - `bash$ git push -u origin master`
 
+
 ##  Using Git
 - `bash$ git status`
 - `bash$ git add -A`
 - `bash$ git commit -m "Comment"`
 - `bash$ git push`
+
+###  Creating branch
+```bash
+
+```
