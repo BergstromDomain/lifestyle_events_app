@@ -8,9 +8,13 @@ class LifestyleEventTypesController < ApplicationController
 
   def create
     @lifestyle_event_type = LifestyleEventType.new(lifestyle_event_type_params)
-    @lifestyle_event_type.save
-    flash[:sucess] = "The lifestyle event type has been created"
-    redirect_to lifestyle_event_types_path
+    if @lifestyle_event_type.save
+      flash[:sucess] = "The lifestyle event type has been created"
+      redirect_to lifestyle_event_types_path
+    else
+      flash.now[:danger] = "The lifestyle event type has not been created"
+      render :new
+    end
   end
 
   private
