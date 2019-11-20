@@ -2,7 +2,7 @@
 @import "bootstrap";
 
 body {
-  padding-top: 80px;
+  padding-top: 100px;
   background: #e1e1e1;
   color: #64103F;
 }
@@ -55,4 +55,24 @@ body {
   font-size: 2.5em;
   margin-bottom: 0.8em;
   padding-left: 0.7em;
+}
+
+.lifestyle-event-type-detail {
+  margin-top: 20px;
+  color: #0000ff;
+}
+
+.lifestyle-event-type-detail-title {
+  font-size: 3em;
+  margin-bottom: 40px;
+}
+
+.lifestyle-event-type-show-body {
+  font-size: 1.5em;
+  padding-left: 0em;
+  margin-top: 15px;
+}
+
+.edit-delete {
+  margin-top: 20px;
 }

@@ -43,7 +43,17 @@ git commit -m "Initiating the application"
 - `bash$ git commit -m "Comment"`
 - `bash$ git push`
 
-###  Creating branch
+###  Working with branches
+List existing branches
 ```bash
-
+git branch
+```
+Create a new branch using the `-b` flag of the `git checkout` command
+```bash
+git branch -b new-branch-name
+```
+To merge two branches, make sure you're on the branch you want to merge into, _master_ and run the `merge` command
+```bash
+git checkout master
+git merge new-branch-name
 ```

@@ -6,7 +6,7 @@
       <% if @lifestyle_event_type.errors.any? %>
         <div class="panel panel-danger col-md-offset-1">
           <div class= "panel-heading">
-            <h3 class=panel-title">
+            <h3 class="panel-title">
               <%= pluralize(@lifestyle_event_type.errors.count, "error") %>
               prohibited this lifestyle event type from being saved:
             </h3>
@@ -28,7 +28,7 @@
           <%= f.label :title %>
         </div>
         <div class="col-md-11">
-          <%= f.text_field :title, class: 'form-control', placeholder: "Title of lifestyle event type", autofocus: true %>
+          <%= f.text_field :title, class: "form-control", placeholder: "Title of lifestyle event type", autofocus: true %>
         </div>
       </div>
 

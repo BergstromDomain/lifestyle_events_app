@@ -2,7 +2,7 @@ Lifestyle Events App
 ==================================================
 
 ##  Creating the Lifestyle Events App
-Move to the working directory and create a new application without the testing framework
+Move to the working directory and create a new application, using the `-T` flag to skip the testing framework since I'll be using _RSpec_
 ```bash
 rails new lifestyle_events_app -T
 ```
@@ -16,9 +16,7 @@ cd lifestyle_events_app
 rails server
 ```
 
-View the local application in Firefox
-- http://localhost:3000/
-
+View the local application in your browser `http://localhost:3000/`
 
 ##  Git
 ###  Initializing the Git Repository
@@ -26,11 +24,11 @@ View the local application in Firefox
 git init
 git status
 git add -A
-git status
 git commit -m "Initializing Lifestyle Events App"
 ```
 
-### Pushing an existing repository from the command line
+### Pushing repository to GitHub
+From GitHub, copy the URL and paste it on the command line to push your existing repository GitHub
 ```bash
 git remote add origin git@github.com:BergstromDomain/lifestyle_events_app.git
 git push -u origin master
@@ -54,7 +52,7 @@ group :test do
   gem 'capybara', '~> 3.29'
 end
 ```
-Run the _Bundler_ to install the new _gems_
+Run the _Bundler_ to install the new gems
 ```bash
 bundle install
 ```
@@ -105,7 +103,6 @@ Initialize _Cucumber_ with the command:
 cucumber --init
 ```
 
-
 Update the _Guardfile_ by adding watches under the _Rails files_, _Rails config changes_ and _Capybara features specs_
 ```ruby
 # Rails files
@@ -135,13 +132,13 @@ watch(rails.layouts)       { |m| rspec.spec.call("features/#{m[1]}") }
 
 
 ## CRUD Event Types
-### Create Event Types
+### Create Lifestyle Event Types
 Create a topic branch
 ```bash
-git checkout -b article-feature-success
+git checkout -b creating-lifestyle-event-types
 ```
 #### Create feature specification
-Create a new file called _creating_event_types_spec.rb_
+Create a new file called _creating_event_types_spec.rb_ and make sure it starts with the line `require "rails_helper"`
 ```ruby
 require "rails_helper"
 
@@ -149,15 +146,19 @@ RSpec.feature "Creating Lifestyle Event Types" do
   scenario "A user creates a new event type" do
     visit "/"
 
-    click_link "New Event Type"
+    click_link "New Lifestyle Event Type"
 
     fill_in "Name", with: "Birthday"
-    click_button "Create Event Type"
+    click_button "Create Lifestyle Event Type"
 
-    expect(page).to have_content("Event type has been created")
+    expect(page).to have_content("Lifestyle Event Type has been created")
     expect(page.current_path).to eq(event_types_path)
   end
 end
+```
+#### Run RSpec and address errors
+```bash
+rspec spec/features/creating_lifestyle_event_types_spec.rb
 ```
 
 #### Update the route file
@@ -170,10 +171,55 @@ Create the required resources by updating the _config/routes.rb_ file
 resources :lifestyle_event_types
 ```
 
-#### Generate controller
+#### Generate the controller
 Use a generator to create a controller
 ```bash
 rails g controller lifestyle_event_types index
+```
+
+#### Create the index view
+Create the file _app/views/lifestyle_event_types/index.html.erb_ and add the link to _New Lifestyle Event Types_
+```ruby
+<%= link_to "New Lifestyle Event Type", new_lifestyle_event_type_path, class: "btn btn-default btn-lg", id: "new-lifestyle-event-type-btn" %>
+```
+
+#### Update the route file
+Add `resources` to the _config/routes.rb_ file
+```ruby
+resources :lifestyle_event_types
+```
+
+#### Add the new action to the controller
+Add the `new` action for the controller
+```ruby
+def new
+  @lifestyle_event_type = LifestyleEventType.new
+end
+```
+
+#### Create the new view
+Create the file _app/views/lifestyle_event_types/new.html.erb_
+```ruby
+<h3 class="text-center">Adding New Lifestyle Event Type</h3>
+<div class="row">
+  <div class="col-md-12">
+    <%= form_for(@lifestyle_event_type, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+      <div class="form-group">
+        <div class="control-label col-md-1">
+          <%= f.label :title %>
+        </div>
+        <div class="col-md-11">
+          <%= f.text_field :title, class: "form-control", placeholder: "Title of lifestyle event type", autofocus: true %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-1 col-md-11">
+          <%= f.submit "Create Lifestyle Event Type", class: "btn btn-primary btn-lg pull-right" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
 ```
 
 #### Generate model
@@ -188,24 +234,104 @@ Run the migration to create a database
 rails db:migrate
 ```
 
-
-
+#### Add the create action to the controller
+Add the `create` action for the controller as well as the __private__ `lifestyle_event_type_params` method
 ```ruby
+def create
+  @lifestyle_event_type = LifestyleEventType.new(lifestyle_event_type_params)
+  if @lifestyle_event_type.save
+    flash[:sucess] = "The lifestyle event type has been created"
+    redirect_to lifestyle_event_types_path
+  else
+    flash.now[:danger] = "The lifestyle event type has not been created"
+    render :new
+  end
+end
+
+private
+  def lifestyle_event_type_params
+    params.require(:lifestyle_event_type).permit(:title)
+  end
+```
+#### Add flash to the application
+Update the file _app/views/layouts/application.html.erb_ to add flash to the application
+```ruby
+<% flash.each do |key, message| %>
+  <div class="text-center alert alert-<%= key == 'notice'? 'success': 'danger' %>">
+    <%= message %>
+    </div>
+<% end %>
+```
+#### Add Bootstrap for styling
+In the Gemfile add the following gems:
+```ruby
+gem 'bootstrap-sass', '~> 3.4', '>= 3.4.1'
+gem 'autoprefixer-rails', '~> 9.7', '>= 9.7.2'
+```
+Run `bundle install`
+
+Create a new file _app/assets/stylesheets/custom.css.scss_ and add the following to it:
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+Update the file _app/assets/javascripts/application.js_ by adding the line
+```java script
+//= require bootstrap-sprockets
 ```
 
-```bash
+#### Add a navigation bar
+Edit the file _app/views/layouts/application.html.erb_ and add a navigation bar in the body tag:
+```ruby
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <%= link_to "Niklas", root_path, class: "navbar-brand" %>
+      </div>
+      <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><%= link_to "Lifestyle Events App", root_path %></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <% flash.each do |key, message| %>
+      <div class="text-center alert alert-<%= key == 'notice'? 'success': 'danger' %>">
+        <%= message %>
+      </div>
+      <% end %>
+      <%= yield %>
+    </div>
+  </div>
+</div>
+</body>
+```
+__Note:__ This caused the error: `ExecJS::ProgramError in LifestyleEventTypes#index
+identifier '(function(opts, pluginOpts) {return eval(process' undefined
+`
+![Error message](public/images/Rails_Error_-_ExecJS.png)
+The solution I used was to comment out the `duktape` gem from the _Gemfile_
+
+#### Adding validation
+Update the file _models/lifestyle_event_type.rb_ to include validation and sort order
+```ruby
+validates :title, presence: true
+default_scope { order(created_at: :desc) }
+
 ```
 
-
-
-
-
-
-
-
-
-
-
+##  Configure RSpec
 
 ####################################################################################################
 ##  Configure RSpec
@@ -219,50 +345,6 @@ rails db:migrate
 --no-fail-fast
 --order defined
 
-
-####################################################################################################
-##  Feature test for Lifestyle Events app
-####################################################################################################
-
-git checkout -b lifestyle-events-feature-success 		# Create a branch
-git branch
-
-mkdir spec/features
-
-# Create RSpec file creating_lifestyle_event_spec.rb
-require "rails_helper"
-
-RSpec.featur "Creating Lifestyle Events" do
-  scenario "A user created a new lifestyle event" do
-    visit "/"
-
-    click_link "New Lifestyle Event"
-
-    fill_in "Name", with: "Adam Alpha"
-    fill_in "Date", with: "1-Jan-2001"
-    fill_in "Event Type", with: "Birthday"
-
-    click_button "Create Lifestyle Event"
-
-    expect(page).to have_content("Lifestyle event has been created")
-    expect(page.current_path).to eq(lifestyle_events_path)
-  end
-end
-
-
-
-####################################################################################################
-##  Generate a Lifestyle Events controller with an Index action
-####################################################################################################
-
-rails generate controller lifestyle_events index
-
-
-####################################################################################################
-##  Update the index.html.erb file
-####################################################################################################
-
-<%= link_to "New Lifestyle Event", new_lifestyle_event_path %>
 
 
 ####################################################################################################
@@ -283,50 +365,6 @@ end
 rails generate model lifestyle_event name:string date:string type:string
 
 
-####################################################################################################
-##  Modify the migration file to use the up and down methods
-####################################################################################################
-
-class CreateLifestyleEvents < ActiveRecord::Migration[5.2]
-  def up
-    create_table :lifestyle_events do |t|
-      t.string :name
-      t.string :date
-      t.string :type
-
-      t.timestamps
-    end
-
-    def down
-      drop_table :lifestyle_events do |t|
-        t.string :name
-        t.string :date
-        t.string :type
-
-        t.timestamps
-      end
-
-  end
-end
-
-
-####################################################################################################
-##  Run the migration
-####################################################################################################
-
-rails db:migrate
-
-
-####################################################################################################
-##  Run the Rails Console to test the model
-####################################################################################################
-
-rails console
-
-LifestyleEvent.all
-LifestyleEvent
-
-exit
 
 
 ####################################################################################################
@@ -342,17 +380,6 @@ end
 
 #  Add flah message to the application
 
-
-####################################################################################################
-##  Git commit changes and merge to master branch
-####################################################################################################
-
-git status
-git add --A
-git commit -m "Create Lifestyle Event Successfully"
-git checkout master
-git merge lifestyle-events-feature-success
-git push
 
 
 ####################################################################################################
@@ -380,30 +407,4 @@ bundle install
 
 # Add the navigation bar to application.html.erb
 
-
-####################################################################################################
-##  Adding Guard
-####################################################################################################
-
-git checkout -b adding-guard
-
-# Add gems to gemfile
-# guard
-# guard-rspec
-# guard-cucumber
-
-# Install Guard on the system
-sudo apt install ruby-guard
-
-bundle install
-bundle binstubs guard
-guard init
-
-# Start Guard
-guard
-
-# Stop Guard
-exit
-
-# Initialise cucumber
-cucumber --init
+s

@@ -18,10 +18,21 @@ class LifestyleEventTypesController < ApplicationController
     end
   end
 
+  def show
+    @lifestyle_event_type = LifestyleEventType.find(params[:id])
+  end
+
+  protected
+    def resource_not_found
+      message = "The lifestyle event type you are looking for could not be found"
+      flash[:alert] = message
+      redirect_to root_path
+    end
+
+
   private
 
     def lifestyle_event_type_params
       params.require(:lifestyle_event_type).permit(:title)
     end
-
 end
