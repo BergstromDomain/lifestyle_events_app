@@ -1,8 +1,19 @@
 <lifestyle_event_type class="detail-lifestyle-event_type">
-  <h1 class="lifestyle-event-type-detail-title">
-    <%= @lifestyle_event_type.title %>
-  </h1>
+  <h1 class="lifestyle-event-type-detail-title"><%= @lifestyle_event_type.title %></h1>
+  <div class="glyphicon glyphicon-user" id="lifestyle-event-type-user">
+    <b>Created by: </b>Niklas Bergstrom
+  </div>
+  <br></br>
+
   <div class="glyphicon glyphicon-calendar" id="lifestyle-event-type-date">
-    <%= @lifestyle_event_type.created_at.strftime("%d %B %Y") %>
+    <b>Created on: </b><%= @lifestyle_event_type.created_at.strftime("%d %B %Y") %>
+  </div>
+  <br></br>
+
+  <div class="edit-delete">
+  <%= link_to "Edit Lifestyle Event Type", edit_lifestyle_event_type_path(@lifestyle_event_type), class: "btn btn-primary btn-lg btn-space" %>
+  <%= link_to "Delete Lifestyle Event Type", lifestyle_event_type_path(@lifestyle_event_type), method: :delete,
+      data: { confirm: "Are you sure you want to delete the lifestyle event type?" },
+      class: "btn btn-primary btn-lg btn-space" %>
   </div>
 </lifestyle_event_type>

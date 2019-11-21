@@ -22,6 +22,29 @@ class LifestyleEventTypesController < ApplicationController
     @lifestyle_event_type = LifestyleEventType.find(params[:id])
   end
 
+  def edit
+    @lifestyle_event_type = LifestyleEventType.find(params[:id])
+  end
+
+  def update
+    @lifestyle_event_type = LifestyleEventType.find(params[:id])
+    if @lifestyle_event_type.update(lifestyle_event_type_params)
+      flash[:sucess] = "The lifestyle event type has been updated"
+      redirect_to @lifestyle_event_type
+    else
+      flash.now[:danger] = "The lifestyle event type has not been updated"
+      render :edit
+    end
+  end
+
+  def destroy
+    @lifestyle_event_type = LifestyleEventType.find(params[:id])
+    if @lifestyle_event_type.destroy
+      flash[:sucess] = "The lifestyle event type has been deleted"
+      redirect_to lifestyle_event_types_path
+    end
+  end
+
   protected
     def resource_not_found
       message = "The lifestyle event type you are looking for could not be found"
