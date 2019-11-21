@@ -1,1 +1,13 @@
-<%= link_to "New Lifestyle Event", new_lifestyle_event_path %>
+<%= link_to "New Lifestyle Event", new_lifestyle_event_path, class: "btn btn-primary btn-lg pull-right", id: "new-lifestyle-event-btn" %>
+
+<% if @lifestyle_events.empty? %>
+  <h1 id="no-lifestyle-events">No lifestyle events have been created</h1>
+<% else %>
+  <% @lifestyle_events.each do |event| %>
+    <div class="well well-lg">
+      <div class="lifestyle-event-title">
+        <%= link_to event.description, lifestyle_event_path(event) %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

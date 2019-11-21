@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Listing Lifestyle Event Types" do
+RSpec.feature "Showing Lifestyle Event Types" do
   before do
     @lifestyle_event_type1 = LifestyleEventType.create(title: "Birthday")
     @lifestyle_event_type2 = LifestyleEventType.create(title: "Wedding")

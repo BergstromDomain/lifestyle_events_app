@@ -28,7 +28,7 @@ RSpec.feature "Listing Lifestyle Event Types" do
     expect(page).not_to have_link(@lifestyle_event_type2.title)
 
     within("h1#no-lifestyle-event-types") do
-      expect(page).to have_content("No Lifestyle Event Types have been created")
+      expect(page).to have_content("No lifestyle event types have been created")
     end
   end
 

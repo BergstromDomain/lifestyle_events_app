@@ -20,5 +20,4 @@ RSpec.feature "Creating Lifestyle Event Types" do
     expect(page).to have_content("The lifestyle event type has not been created")
     expect(page).to have_content("Title can't be blank")
   end
-
 end
