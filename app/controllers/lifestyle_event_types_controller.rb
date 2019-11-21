@@ -1,10 +1,13 @@
 class LifestyleEventTypesController < ApplicationController
+  before_action :set_lifestyle_event_type, only: [:show, :edit, :update, :destroy]
+
   def index
     @lifestyle_event_types = LifestyleEventType.all
   end
 
   def new
     @lifestyle_event_type = LifestyleEventType.new
+    @submit_text = "Create Lifestyle Event Type"
   end
 
   def create
@@ -19,15 +22,13 @@ class LifestyleEventTypesController < ApplicationController
   end
 
   def show
-    @lifestyle_event_type = LifestyleEventType.find(params[:id])
   end
 
   def edit
-    @lifestyle_event_type = LifestyleEventType.find(params[:id])
+    @submit_text = "Update Lifestyle Event Type"
   end
 
   def update
-    @lifestyle_event_type = LifestyleEventType.find(params[:id])
     if @lifestyle_event_type.update(lifestyle_event_type_params)
       flash[:sucess] = "The lifestyle event type has been updated"
       redirect_to @lifestyle_event_type
@@ -38,7 +39,6 @@ class LifestyleEventTypesController < ApplicationController
   end
 
   def destroy
-    @lifestyle_event_type = LifestyleEventType.find(params[:id])
     if @lifestyle_event_type.destroy
       flash[:sucess] = "The lifestyle event type has been deleted"
       redirect_to lifestyle_event_types_path
@@ -46,6 +46,7 @@ class LifestyleEventTypesController < ApplicationController
   end
 
   protected
+
     def resource_not_found
       message = "The lifestyle event type you are looking for could not be found"
       flash[:alert] = message
@@ -54,6 +55,10 @@ class LifestyleEventTypesController < ApplicationController
 
 
   private
+
+    def set_lifestyle_event_type
+      @lifestyle_event_type = LifestyleEventType.find(params[:id])
+    end
 
     def lifestyle_event_type_params
       params.require(:lifestyle_event_type).permit(:title)
